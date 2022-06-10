@@ -19,11 +19,6 @@ WA.room.onLeaveLayer("clockZone").subscribe(() => {
     myLayerSubscriber.unsubscribe();
 });
 
-WA.room.onEnterLayer("notificationZone").subscribe(() => {
-    countUpTimer();
-    currentPopup = WA.ui.openPopup("notificationPopup", "Temps d'attente : " + totalSeconds + " secondes", []);
-});
-
 WA.room.onEnterZone('clock', () => {
     currentPopup = WA.ui.openPopup("clockPopup", "It's " + time, []);
 })
@@ -42,7 +37,12 @@ WA.onInit().then(() => {
     });
 });
 
-WA.room.onLeaveLayer("notificationZone").subscribe(() => {
+WA.room.onEnterLayer("guestNumber").subscribe(() => {
+    console.log(WA.players)
+    currentPopup = WA.ui.openPopup("notificationPopup", "Vous etes le numéro : " + WA.player.userId, []);
+});
+
+WA.room.onLeaveLayer("guestNumber").subscribe(() => {
     myLayerSubscriber.unsubscribe();
 });
 

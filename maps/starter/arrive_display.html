@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workadventure Timer</title>
+    <style>
+        table.timerTable {
+            border: 1px solid #1C6EA4;
+            background-color: #EEEEEE;
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        table.timerTable td,
+        table.timerTable th {
+            border: 1px solid #AAAAAA;
+            padding: 3px 1px;
+        }
+
+        table.timerTable tbody td {
+            font-size: 13px;
+            color: #330000;
+        }
+
+        table.timerTable tr:nth-child(even) {
+            background: #D0E4F5;
+        }
+
+        table.timerTable thead {
+            background: #0E6FA4;
+            background: -moz-linear-gradient(top, #4a93bb 0%, #267dad 66%, #0E6FA4 100%);
+            background: -webkit-linear-gradient(top, #4a93bb 0%, #267dad 66%, #0E6FA4 100%);
+            background: linear-gradient(to bottom, #4a93bb 0%, #267dad 66%, #0E6FA4 100%);
+        }
+
+        table.timerTable thead th {
+            font-size: 15px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        table.timerTable tfoot {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFFFFF;
+            background: #D0E4F5;
+            background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            border-top: 2px solid #444444;
+        }
+
+        table.timerTable tfoot td {
+            font-size: 14px;
+        }
+
+        table.timerTable tfoot .links {
+            text-align: right;
+        }
+
+        table.timerTable tfoot .links a {
+            display: inline-block;
+            background: #1C6EA4;
+            color: #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="https://play.workadventu.re/iframe_api.js"></script>
+    <script>
+        var PlayersArrivalTimes = []
+
+        WA.onInit().then(() => {
+            WA.player.sharedState.arrivalTime = Date.now()
+            console.log("arrivalTime: " + WA.player.sharedState.arrivalTime)
+
+            WA.players.onVariableChange('arrivalTime', (user, value) => {
+
+
+                PlayersArrivalTimes.push({ "userId": user, "arrivalTime": value })
+                console.log("arrival times tab", PlayersArrivalTimes)
+                console.log('arrivalTime updated for user ', user, 'new value', value);
+            });
+
+            WA.room.onEnterLayer("guestNumber").subscribe(() => {
+                currentPopup = WA.ui.openPopup("notificationPopup", "Vous etes le numéro : " + WA.player.userId, []);
+            });
+        }); 
+        
+        document.getElementById("numero").innerHTML = WA.player.userId;
+        document.getElementById("heure").innerHTML = PlayersArrivalTimes.arrivalTime;
+        
+    </script>
+</head>
+
+<body>
+    <table class="timerTable">
+        <thead>
+            <tr>
+                <th>Numéro</th>
+                <th>Heure d'arrivée</th>
+            </tr>
+        </thead>
+        <tfoot>
+
+        </tfoot>
+        <tbody>
+            <tr id="appender">
+                <td id="numero">0</td>
+                <td id="heure">0</td>
+            </tr>
+        </tbody>
+        </tr>
+    </table>
+</body>
+
+</html>
