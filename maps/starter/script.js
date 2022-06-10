@@ -30,20 +30,12 @@ WA.room.onEnterZone('clock', () => {
 var PlayersArrivalTimes = []
 
 WA.onInit().then(() => {
-    WA.player.sharedState.arrivalTime = Date.now()
-    console.log("arrivalTime: " + WA.player.sharedState.arrivalTime)
+    WA.player.sharedState.arrivalTime = new Date().toLocaleTimeString()
 
     WA.players.onVariableChange('arrivalTime', (user, value) => {
-
-
-        PlayersArrivalTimes.push({ "userId": user, "arrivalTime": value })
-        console.log("arrival times tab", PlayersArrivalTimes)
-        console.log('arrivalTime updated for user ', user, 'new value', value);
+        PlayersArrivalTimes.push({"userId": user, "arrivalTime": value})
+        console.log(PlayersArrivalTimes)
     });
-});
-
-WA.room.onLeaveLayer("notificationZone").subscribe(() => {
-    myLayerSubscriber.unsubscribe();
 });
 
 function closePopUp() {
