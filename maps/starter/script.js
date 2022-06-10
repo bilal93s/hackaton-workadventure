@@ -7,14 +7,21 @@ const time = today.getHours() + ":" + today.getMinutes();
 WA.room.onEnterZone('clock', () => {
     currentPopup =  WA.ui.openPopup("clockPopup","It's " + time,[]);
 })
+var PlayersArrivalTimes = []
 
 WA.onInit().then(() => {
     WA.player.sharedState.arrivalTime = Date.now()
     console.log("arrivalTime: " + WA.player.sharedState.arrivalTime)
 
     WA.players.onVariableChange('arrivalTime', (user, value) => {
+
+    
+        PlayersArrivalTimes.push({"userId": user, "arrivalTime": value})
+        console.log("arrival times tab",PlayersArrivalTimes)
         console.log('arrivalTime updated for user ', user, 'new value', value);
     });
+
+
 });
 
 WA.room.onLeaveZone('clock', closePopUp)
