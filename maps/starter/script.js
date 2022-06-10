@@ -22,8 +22,10 @@ WA.room.onLeaveLayer("clockZone").subscribe(() => {
 WA.room.onEnterLayer("notificationZone").subscribe(() => {
     countUpTimer();
     currentPopup = WA.ui.openPopup("notificationPopup", "Temps d'attente : " + totalSeconds + " secondes", []);
+});
+
 WA.room.onEnterZone('clock', () => {
-    currentPopup =  WA.ui.openPopup("clockPopup","It's " + time,[]);
+    currentPopup = WA.ui.openPopup("clockPopup", "It's " + time, []);
 })
 var PlayersArrivalTimes = []
 
@@ -33,13 +35,11 @@ WA.onInit().then(() => {
 
     WA.players.onVariableChange('arrivalTime', (user, value) => {
 
-    
-        PlayersArrivalTimes.push({"userId": user, "arrivalTime": value})
-        console.log("arrival times tab",PlayersArrivalTimes)
+
+        PlayersArrivalTimes.push({ "userId": user, "arrivalTime": value })
+        console.log("arrival times tab", PlayersArrivalTimes)
         console.log('arrivalTime updated for user ', user, 'new value', value);
     });
-
-
 });
 
 WA.room.onLeaveLayer("notificationZone").subscribe(() => {
@@ -55,7 +55,7 @@ function closePopUp() {
 
 // Affichage de la popup Waiting Room
 WA.room.onEnterZone('waiting', () => {
-    currentPopup =  WA.ui.openPopup("waitingPopup","Vous êtes dans la Waiting Room, veuillez restez dans la salle jusqu'à que quelqun vienne vous chercher." , []);
+    currentPopup = WA.ui.openPopup("waitingPopup", "Vous êtes dans la Waiting Room, veuillez restez dans la salle jusqu'à que quelqun vienne vous chercher.", []);
 })
 
 WA.room.onLeaveZone('waiting', closePopUp)
