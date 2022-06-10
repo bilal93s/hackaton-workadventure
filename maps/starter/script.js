@@ -16,3 +16,10 @@ function closePopUp(){
         currentPopup = undefined;
     }
 }
+
+// Affichage de la popup Waiting Room
+WA.room.onEnterZone('waiting', () => {
+    currentPopup =  WA.ui.openPopup("waitingPopup","Vous êtes dans la Waiting Room, veuillez restez dans la salle jusqu'à que quelqun vienne vous chercher." , []);
+})
+
+WA.room.onLeaveZone('waiting', closePopUp)
