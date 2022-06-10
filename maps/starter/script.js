@@ -22,6 +22,24 @@ WA.room.onLeaveLayer("clockZone").subscribe(() => {
 WA.room.onEnterLayer("notificationZone").subscribe(() => {
     countUpTimer();
     currentPopup = WA.ui.openPopup("notificationPopup", "Temps d'attente : " + totalSeconds + " secondes", []);
+WA.room.onEnterZone('clock', () => {
+    currentPopup =  WA.ui.openPopup("clockPopup","It's " + time,[]);
+})
+var PlayersArrivalTimes = []
+
+WA.onInit().then(() => {
+    WA.player.sharedState.arrivalTime = Date.now()
+    console.log("arrivalTime: " + WA.player.sharedState.arrivalTime)
+
+    WA.players.onVariableChange('arrivalTime', (user, value) => {
+
+    
+        PlayersArrivalTimes.push({"userId": user, "arrivalTime": value})
+        console.log("arrival times tab",PlayersArrivalTimes)
+        console.log('arrivalTime updated for user ', user, 'new value', value);
+    });
+
+
 });
 
 WA.room.onLeaveLayer("notificationZone").subscribe(() => {
