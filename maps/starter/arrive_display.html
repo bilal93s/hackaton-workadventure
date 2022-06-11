@@ -71,6 +71,32 @@
             border-radius: 5px;
         }
     </style>
+    
+    <script src="https://play.workadventu.re/iframe_api.js"></script>
+    
+    <script>
+        /// <reference path="../node_modules/@workadventure/iframe-api-typings/iframe_api.d.ts" />
+        var PlayersArrivalTimes = []
+        WA.onInit().then(() => {
+            WA.player.sharedState.arrivalTime = Date.now()
+            console.log("arrivalTime: " + WA.player.sharedState.arrivalTime)
+
+            WA.players.onVariableChange('arrivalTime', (user, value) => {
+
+
+                PlayersArrivalTimes.push({ "userId": user, "arrivalTime": value })
+                console.log("arrival times tab", PlayersArrivalTimes)
+                console.log('arrivalTime updated for user ', user, 'new value', value);
+            });
+
+            WA.room.onEnterLayer("guestNumber").subscribe(() => {
+                currentPopup = WA.ui.openPopup("notificationPopup", "Vous etes le numéro : " + WA.player.userId, []);
+            });
+        });
+
+        document.getElementById("numero").innerHTML = "test";
+        document.getElementById("heure").innerHTML = "test";
+    </script>
 </head>
 
 <body>
@@ -93,28 +119,7 @@
         </tr>
     </table>
 
-    <script src="https://play.workadventu.re/iframe_api.js">var PlayersArrivalTimes = []
-
-        WA.onInit().then(() => {
-            WA.player.sharedState.arrivalTime = Date.now()
-            console.log("arrivalTime: " + WA.player.sharedState.arrivalTime)
-
-            WA.players.onVariableChange('arrivalTime', (user, value) => {
-
-
-                PlayersArrivalTimes.push({ "userId": user, "arrivalTime": value })
-                console.log("arrival times tab", PlayersArrivalTimes)
-                console.log('arrivalTime updated for user ', user, 'new value', value);
-            });
-
-            WA.room.onEnterLayer("guestNumber").subscribe(() => {
-                currentPopup = WA.ui.openPopup("notificationPopup", "Vous etes le numéro : " + WA.player.userId, []);
-            });
-        });
-
-        document.getElementById("numero").innerHTML = "test";
-        document.getElementById("heure").innerHTML = "test";
-    </script>
+    
 </body>
 
 </html>
