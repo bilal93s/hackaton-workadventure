@@ -35,7 +35,7 @@ var PlayersArrivalTimes = []
 
 WA.room.onEnterLayer("guestNumber").subscribe(() => {
     countUpTimer;
-    currentPopup = WA.ui.openPopup("notificationPopup", "Vous patientez depuis : " + totalSeconds + " secondes", []);
+    currentPopup = WA.ui.openPopup("notificationPopup", "Vous patienter depuis : " + totalSeconds + " secondes", []);
 });
 
 function countUpTimer() {
@@ -46,7 +46,8 @@ function countUpTimer() {
 }
 
 WA.room.onLeaveLayer("guestNumber").subscribe(() => {
-    myLayerSubscriber.unsubscribe();
+    currentPopup.close();
+    currentPopup = undefined;
 });
 
 function closePopUp() {
