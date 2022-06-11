@@ -71,55 +71,46 @@
             border-radius: 5px;
         }
     </style>
-    
-    <script src="https://play.workadventu.re/iframe_api.js"></script>
-    
-    <script>
-        /// <reference path="../node_modules/@workadventure/iframe-api-typings/iframe_api.d.ts" />
-        var PlayersArrivalTimes = []
-        WA.onInit().then(() => {
-            WA.player.sharedState.arrivalTime = Date.now()
-            console.log("arrivalTime: " + WA.player.sharedState.arrivalTime)
-
-            WA.players.onVariableChange('arrivalTime', (user, value) => {
 
 
-                PlayersArrivalTimes.push({ "userId": user, "arrivalTime": value })
-                console.log("arrival times tab", PlayersArrivalTimes)
-                console.log('arrivalTime updated for user ', user, 'new value', value);
-            });
-
-            WA.room.onEnterLayer("guestNumber").subscribe(() => {
-                currentPopup = WA.ui.openPopup("notificationPopup", "Vous etes le numéro : " + WA.player.userId, []);
-            });
-        });
-
-        document.getElementById("numero").innerHTML = "test";
-        document.getElementById("heure").innerHTML = "test";
-    </script>
 </head>
 
 <body>
     <table class="timerTable">
         <thead>
             <tr>
-                <th>Numéro</th>
+                <th>Nom</th>
                 <th>Heure d'arrivée</th>
             </tr>
         </thead>
-        <tfoot>
-
-        </tfoot>
         <tbody>
             <tr id="appender">
-                <td id="numero">0</td>
-                <td id="heure">0</td>
+                <td id="name">0</td>
+                <td id="arrival">0</td>
             </tr>
         </tbody>
         </tr>
     </table>
 
-    
+    <script src="http://play.workadventure.localhost/iframe_api.js"></script>
+    <script>
+        var PlayersArrivalTimes = []
+        WA.onInit().then(() => {
+            // WA.players.setSharedPlayerVariable("arrivalTime", {"playerId": WA.player.name, "value": new Date().toLocaleTimeString() })
+            WA.player.sharedState.saveVariable("arrivalTime", { "playerId": WA.player.name, "value": new Date().toLocaleTimeString() })
+
+            WA.players.onVariableChange('arrivalTime', (user, value) => {
+                foo = JSON.parse(value)
+                PlayersArrivalTimes.push({ "userId": foo.playerId, "arrivalTime": foo.value })
+
+                PlayersArrivalTimes.map(element => {
+                    document.getElementById("name").innerHTML = element.userId;
+                    document.getElementById("arrival").innerHTML = element.arrivalTime;
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

@@ -24,19 +24,26 @@ WA.room.onEnterZone('clock', () => {
 })
 var PlayersArrivalTimes = []
 
-WA.onInit().then(() => {
-    WA.player.sharedState.arrivalTime = new Date().toLocaleTimeString()
+// WA.onInit().then(() => {
+//     WA.player.sharedState.arrivalTime = new Date().toLocaleTimeString()
 
-    WA.players.onVariableChange('arrivalTime', (user, value) => {
-        PlayersArrivalTimes.push({"userId": user, "arrivalTime": value})
-        console.log(PlayersArrivalTimes)
-    });
-});
+//     WA.players.onVariableChange('arrivalTime', (user, value) => {
+//         PlayersArrivalTimes.push({"userId": user, "arrivalTime": value})
+//         console.log(PlayersArrivalTimes)
+//     });
+// });
 
 WA.room.onEnterLayer("guestNumber").subscribe(() => {
-    console.log(WA.players)
-    currentPopup = WA.ui.openPopup("notificationPopup", "Vous etes le numéro : " + WA.player.userId, []);
+    countUpTimer;
+    currentPopup = WA.ui.openPopup("notificationPopup", "Vous patientez depuis : " + totalSeconds + " secondes", []);
 });
+
+function countUpTimer() {
+    ++totalSeconds;
+    var hour = Math.floor(totalSeconds / 3600);
+    var minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    var seconds = totalSeconds - (hour * 3600 + minute * 60);
+}
 
 WA.room.onLeaveLayer("guestNumber").subscribe(() => {
     myLayerSubscriber.unsubscribe();
@@ -54,10 +61,5 @@ WA.room.onEnterZone('waiting', () => {
     currentPopup = WA.ui.openPopup("waitingPopup", "Vous êtes dans la Waiting Room, veuillez restez dans la salle jusqu'à que quelqun vienne vous chercher.", []);
 })
 
-WA.room.onLeaveZone('waiting', closePopUp)
-function countUpTimer() {
-    ++totalSeconds;
-    var hour = Math.floor(totalSeconds / 3600);
-    var minute = Math.floor((totalSeconds - hour * 3600) / 60);
-    var seconds = totalSeconds - (hour * 3600 + minute * 60);
-}
+WA.room.onLeaveZone('waiting', closePopUp);
+
